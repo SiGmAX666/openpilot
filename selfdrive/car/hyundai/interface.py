@@ -135,6 +135,11 @@ class CarInterface(CarInterfaceBase):
       ret.wheelbase = 2.7
       ret.steerRatio = 13.73 * 1.15
     elif candidate in [CAR.IONIQ_HEV, CAR.IONIQ_EV_LTD]:
+      ret.lateralTuning.init('indi')                      # TODO: BPs for city/highway speeds - this tuning is great on the highway but a bit lazy in town
+      ret.lateralTuning.indi.innerLoopGain = 2.1          # higher values steer more
+      ret.lateralTuning.indi.outerLoopGain = 3.1          # higher values steer more
+      ret.lateralTuning.indi.timeConstant = 1.4           # lower values steer more
+      ret.lateralTuning.indi.actuatorEffectiveness = 2.0  # lower values steer more
       ret.mass = 1490. + STD_CARGO_KG
       ret.wheelbase = 2.7
       ret.steerRatio = 13.73 * 1.15
