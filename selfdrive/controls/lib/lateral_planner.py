@@ -18,6 +18,7 @@ LaneChangeDirection = log.LateralPlan.LaneChangeDirection
 LOG_MPC = os.environ.get('LOG_MPC', False)
 
 LANE_CHANGE_SPEED_MIN = 45 * CV.MPH_TO_MS
+
 LANE_CHANGE_TIME_MAX = 10.
 # this corresponds to 80deg/s and 20deg/s steering angle in a toyota corolla
 MAX_CURVATURE_RATES = [0.03762194918267951, 0.003441203371932992]
@@ -92,6 +93,12 @@ class LateralPlanner():
     measured_curvature = sm['controlsState'].curvature
 
     md = sm['modelV2']
+
+    if Params().get("IsMetric", encoding='utf8') == "1":
+      LANE_CHANGE_SPEED_MIN = opParams().get('LCA_Min_Speed') * CV.KPH_TO_MS
+    else:
+      LANE_CHANGE_SPEED_MIN = opParams().get('LCA_Min_Speed') * CV.MPH_TO_MS
+
     self.LP.parse_model(sm['modelV2'])
     if len(md.position.x) == TRAJECTORY_SIZE and len(md.orientation.x) == TRAJECTORY_SIZE:
       self.path_xyz = np.column_stack([md.position.x, md.position.y, md.position.z])
